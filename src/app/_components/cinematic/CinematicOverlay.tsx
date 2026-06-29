@@ -313,16 +313,16 @@ export function CinematicOverlay({ sceneId, progress }: CinematicOverlayProps) {
       <ScenePanel sceneId={sceneId} progress={progress} />
       {!isFinale && showHint ? (
         <div
-          className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-center will-change-transform"
+          className="absolute inset-x-0 bottom-[max(1.5rem,env(safe-area-inset-bottom))] z-20 flex flex-col items-center"
           style={{
             opacity: scrollHint.opacity,
-            transform: `translate3d(-50%, ${scrollHint.y}px, 0)`,
+            transform: `translateY(${scrollHint.y}px)`,
           }}
         >
-          <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-zinc-500">
+          <span className="pl-[0.28em] text-[10px] font-medium uppercase tracking-[0.28em] text-zinc-500">
             Desliza
           </span>
-          <span className="mx-auto mt-2 block h-8 w-px bg-gradient-to-b from-purple-400/70 to-transparent" />
+          <span className="mt-2 block h-8 w-px bg-gradient-to-b from-purple-400/70 to-transparent" aria-hidden />
         </div>
       ) : null}
     </div>

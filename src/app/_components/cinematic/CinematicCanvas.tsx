@@ -28,7 +28,7 @@ export function CinematicCanvas({ progressRef }: CinematicCanvasProps) {
 
   return (
     <Canvas
-      className="absolute inset-0 z-10 touch-none"
+      className="pointer-events-none absolute inset-0 z-10"
       dpr={mobile ? [1, 1.35] : [1, 2]}
       shadows={!mobile}
       gl={{

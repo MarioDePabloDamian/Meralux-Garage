@@ -49,6 +49,7 @@ export function MeraluxCinematicExperience() {
     if (reduceMotion || !webgl) return;
 
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
     const pin = pinRef.current;
     const track = trackRef.current;
@@ -61,6 +62,7 @@ export function MeraluxCinematicExperience() {
       pin,
       scrub: 0.95,
       anticipatePin: 1,
+      invalidateOnRefresh: true,
       onUpdate: (self) => {
         progressRef.current = self.progress;
         setProgress(self.progress);
@@ -69,7 +71,14 @@ export function MeraluxCinematicExperience() {
       },
     });
 
+    const refresh = () => ScrollTrigger.refresh();
+    refresh();
+    window.addEventListener("load", refresh);
+    window.visualViewport?.addEventListener("resize", refresh);
+
     return () => {
+      window.removeEventListener("load", refresh);
+      window.visualViewport?.removeEventListener("resize", refresh);
       trigger.kill();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
@@ -90,7 +99,7 @@ export function MeraluxCinematicExperience() {
           className="relative"
           aria-label="Experiencia cinematográfica Meralux Garage"
         >
-          <div ref={pinRef} className="studio-black-unify relative h-screen w-full overflow-hidden">
+          <div ref={pinRef} className="studio-black-unify relative h-[100dvh] w-full overflow-hidden">
             <CinematicLightPillar />
             <CinematicCanvas progressRef={progressRef} />
             <CinematicOverlay sceneId={sceneId} progress={progress} />
