@@ -53,5 +53,8 @@ Desktop.ini
 *.swp
 *.swo
 
+# Blender / GLB patch temp
+scripts/.glb-patch-tmp/
+
 # Certificates
 *.pem

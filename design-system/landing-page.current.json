@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "project": "Meralux Garage",
+    "page": "landing",
+    "version": "current",
+    "extractedAt": "2026-06-21",
+    "stack": ["Next.js 16", "React 19", "Tailwind 4", "motion/react", "static export"],
+    "sourceFiles": [
+      "src/app/_components/landing/landing-page.tsx",
+      "src/app/_components/landing/hero-video.tsx",
+      "src/app/_components/landing/service-scroll-showcase.tsx",
+      "src/app/globals.css",
+      "src/lib/site-data.ts"
+    ]
+  },
+  "pattern": {
+    "name": "Video-First Hero + Vertical Stack + Scroll-Scrub Services",
+    "sectionOrder": [
+      "scroll-progress",
+      "navbar",
+      "hero",
+      "section-divider",
+      "trust-strip",
+      "section-divider",
+      "servicios",
+      "section-divider",
+      "proceso",
+      "section-divider",
+      "reseñas",
+      "contacto",
+      "footer"
+    ],
+    "primaryCta": { "label": "Presupuesto", "href": "#contacto", "placements": ["navbar", "hero"] },
+    "secondaryCta": { "label": "Llamar", "href": "tel:+34711207863", "placements": ["navbar"] }
+  },
+  "designSystem": {
+    "style": "Dark OLED + glass cards + purple neon accents",
+    "colors": {
+      "background": "#050505",
+      "surface": "#080808",
+      "surfaceGlass": "linear-gradient(145deg, rgba(24,24,27,0.9), rgba(10,10,10,0.95), rgba(88,28,135,0.12))",
+      "primary": "#7C3AED",
+      "accent": "#A855F7",
+      "accentLight": "#C084FC",
+      "textPrimary": "#FAFAFA",
+      "textBody": "#D4D4D8",
+      "textMuted": "#71717A",
+      "border": "rgba(255,255,255,0.1)",
+      "borderAccent": "rgba(124,58,237,0.25)"
+    },
+    "typography": {
+      "display": { "family": "Syne", "variable": "--font-syne" },
+      "body": { "family": "Montserrat", "variable": "--font-montserrat" },
+      "scale": {
+        "hero": "clamp(2rem, 5vw + 1rem, 4.5rem)",
+        "sectionTitle": "clamp(1.875rem, 4vw + 0.5rem, 3.25rem)",
+        "eyebrow": "0.75rem uppercase tracking-[0.28em]"
+      }
+    },
+    "spacing": {
+      "container": "max-w-7xl (80rem) section-shell",
+      "sectionPadding": "4rem → 6rem → 7rem (responsive)",
+      "navbar": "fixed inset-x-3 top safe-area, rounded-2xl"
+    },
+    "effects": {
+      "glass": "surface-glass utility",
+      "heroOled": "contrast/brightness filter + multiply black crush",
+      "sectionAmbient": "radial purple glow ::before infinite 8s alternate",
+      "scrollProgress": "custom top bar (native scrollbar hidden)"
+    }
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "layout": "100svh fullscreen video, text bottom-left mobile / center-left desktop, car right",
+      "media": { "type": "video-loop", "objectPosition": "65% center desktop" },
+      "backgrounds": [
+        { "component": "LightPillar", "library": "reactbits", "opacity": 0.42, "interactive": true, "zone": "left text area" }
+      ],
+      "content": {
+        "eyebrow": "Car Wrapping & PPF Madrid",
+        "headline": "Vinilado que brilla. Diseñado contigo.",
+        "description": "Transformación exterior con precisión de taller boutique.",
+        "ctas": ["Pedir presupuesto", "Ver servicios"]
+      },
+      "issues": ["Award (Wrap Masters) no visible en hero", "Doble carga visual: video WebGL + LightPillar"]
+    },
+    {
+      "id": "trust-strip",
+      "layout": "4-column grid, divided borders",
+      "items": ["5.0 Google", "Top 4 Wrap Masters", "Rivas Nave 57", "Mate/Satin/Brillo"],
+      "issues": ["Datos de confianza separados del hero", "Sin iconografía ni estrellas visuales"]
+    },
+    {
+      "id": "servicios",
+      "layout": "ServiceScrollShowcase — 6 chapters × 160vh sticky video scrub",
+      "backgrounds": [{ "component": "section-ambient", "type": "css-gradient" }],
+      "content": { "eyebrow": "Servicios", "title": "Wrap · PPF · Detail" },
+      "subCta": { "title": "¿Primera vez?", "href": "#proceso" },
+      "issues": ["Vídeos de servicio aún en fallback", "Sin descripción de sección", "160vh × 6 = scroll muy largo en móvil"]
+    },
+    {
+      "id": "proceso",
+      "layout": "4-column process cards grid",
+      "backgrounds": [
+        { "component": "EvilEye", "library": "reactbits", "opacity": 0.28, "mixBlendMode": "screen" },
+        { "component": "section-ambient", "type": "css-gradient" }
+      ],
+      "issues": ["Evil Eye compite con cards (ruido visual)", "Cards sin conector timeline", "Triple animación infinita (eye + ambient + scroll)"]
+    },
+    {
+      "id": "reseñas",
+      "layout": "marquee mobile / 2-col grid desktop",
+      "issues": ["Rating 5.0 no en cabecera de sección", "Sin badge verificado Google", "Patrón distinto mobile vs desktop"]
+    },
+    {
+      "id": "contacto",
+      "layout": "2-col: info cards + sticky map",
+      "backgrounds": [
+        { "component": "LightPillar", "opacity": 0.5, "quality": "medium" },
+        { "component": "gradient-fade", "type": "css" }
+      ],
+      "issues": ["Segundo LightPillar duplica hero", "Sin CTA teléfono prominente above fold móvil"]
+    }
+  ],
+  "components": {
+    "navbar": { "type": "floating-glass", "blur": true, "scrollState": "border purple on scroll" },
+    "buttons": ["ShimmerButton primary", "ShimmerButton outline"],
+    "cards": ["ProcessCard", "ReviewCard", "ContactCard surface-glass"],
+    "motion": {
+      "scrollReveal": "ScrollReveal + StaggerReveal",
+      "easing": [0.22, 1, 0.36, 1],
+      "reducedMotion": true
+    }
+  },
+  "uxAudit": {
+    "strengths": [
+      "Video-first hero alineado con patrón landing premium",
+      "prefers-reduced-motion implementado",
+      "Scroll scrub servicios es diferenciador",
+      "Contraste texto hero con text-shadow",
+      "cursor-pointer en enlaces interactivos"
+    ],
+    "weaknesses": [
+      "Demasiadas animaciones decorativas infinitas (UX: distracting)",
+      "Dos instancias WebGL (LightPillar ×2 + EvilEye)",
+      "Jerarquía de conversión: CTA no sticky en móvil",
+      "Confianza (award, rating) llega tarde",
+      "section-ambient animado en todas las secciones = fatiga visual",
+      "Servicios sin capítulo visual de progreso global"
+    ],
+    "scores": {
+      "visualHierarchy": 7,
+      "conversion": 6,
+      "performance": 5,
+      "accessibility": 8,
+      "brandCohesion": 8
+    }
+  }
+}

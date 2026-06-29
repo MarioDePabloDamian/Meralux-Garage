@@ -1,0 +1,307 @@
+{
+  "meta": {
+    "project": "Meralux Garage",
+    "page": "landing",
+    "version": "v2-proposed",
+    "basedOn": "landing-page.current.json",
+    "methodology": "ui-ux-pro-max",
+    "references": {
+      "pattern": "Video-First Hero + Horizontal Scroll Journey (chaptered services)",
+      "style": "Dark OLED + Liquid Glass (controlled)",
+      "landing": "Hero + Testimonials + CTA",
+      "ux": ["reduced-motion", "limit infinite decorative animation", "sticky CTA mobile"]
+    }
+  },
+  "pattern": {
+    "name": "Immersive Service Journey",
+    "sectionOrder": [
+      "scroll-progress",
+      "navbar",
+      "hero",
+      "trust-ribbon",
+      "servicios-journey",
+      "proceso-timeline",
+      "reseñas-proof",
+      "contacto-cta",
+      "footer"
+    ],
+    "primaryCta": {
+      "label": "Pedir presupuesto",
+      "href": "#contacto",
+      "placements": ["navbar", "hero", "sticky-mobile-fab", "post-servicios", "contacto"]
+    },
+    "secondaryCta": {
+      "label": "Llamar ahora",
+      "href": "tel:+34711207863",
+      "placements": ["navbar", "hero-ghost", "contacto-card-primary"]
+    }
+  },
+  "designSystem": {
+    "style": "OLED black boutique + liquid glass overlays + single focal glow per viewport",
+    "colors": {
+      "background": "#050505",
+      "backgroundElevated": "#0A0A0C",
+      "surface": "#121218",
+      "surfaceGlass": "rgba(18,18,24,0.72)",
+      "glassBorder": "rgba(255,255,255,0.12)",
+      "primary": "#7C3AED",
+      "primaryHover": "#8B5CF6",
+      "accent": "#E879F9",
+      "accentUV": "#C084FC",
+      "cta": "#A855F7",
+      "ctaHover": "#9333EA",
+      "textPrimary": "#FAFAFA",
+      "textBody": "#D4D4D8",
+      "textMuted": "#A1A1AA",
+      "textOnVideo": "#FFFFFF",
+      "success": "#34D399",
+      "star": "#FBBF24",
+      "chapterTints": {
+        "wrap": "#7C3AED",
+        "ppf": "#6366F1",
+        "detail": "#A855F7"
+      }
+    },
+    "typography": {
+      "display": { "family": "Syne", "keep": true, "reason": "ya cargada, geométrica premium" },
+      "body": { "family": "Montserrat", "keep": true, "reason": "legibilidad en párrafos largos" },
+      "scale": {
+        "hero": "clamp(2.25rem, 4.5vw + 0.75rem, 4rem)",
+        "sectionTitle": "clamp(1.75rem, 3.5vw + 0.5rem, 3rem)",
+        "eyebrow": "0.6875rem uppercase tracking-[0.32em]",
+        "body": "1rem / 1.125rem lg leading-7/8"
+      },
+      "rules": ["Máximo 3 tamaños display por viewport", "Eyebrow siempre morado accentUV", "Títulos blanco 90% no 100% en secciones internas"]
+    },
+    "spacing": {
+      "container": "max-w-7xl px-4 sm:px-6 lg:px-8",
+      "sectionPadding": { "mobile": "5rem", "tablet": "6rem", "desktop": "7.5rem" },
+      "sectionGap": "0 — eliminar dividers redundantes; usar cambio de bg + chapter bar"
+    },
+    "effects": {
+      "glass": {
+        "backdropBlur": "16px",
+        "background": "rgba(18,18,24,0.72)",
+        "border": "1px solid rgba(255,255,255,0.12)",
+        "innerHighlight": "inset 0 1px 0 rgba(255,255,255,0.08)"
+      },
+      "glowPolicy": "1 efecto WebGL activo por viewport; resto CSS estático",
+      "motionPolicy": {
+        "microInteractions": "150-300ms ease-out",
+        "scrollReveals": "once viewport 0.2",
+        "infiniteDecorative": "solo hero LightPillar — desactivar section-glow loop y EvilEye",
+        "reducedMotion": "posters estáticos, sin WebGL, sin scrub"
+      }
+    }
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "layout": {
+        "height": "100svh",
+        "grid": "1 col mobile / 2 col lg — texto izq 45%, respiro derecho para coche",
+        "textAlign": "left",
+        "verticalAlign": "end mobile / center desktop"
+      },
+      "media": {
+        "type": "video-loop",
+        "posterRequired": true,
+        "overlay": "gradient-left 55% black/50→transparent (sustituye vignette triple)"
+      },
+      "backgrounds": [
+        {
+          "component": "LightPillar",
+          "library": "reactbits",
+          "enabled": true,
+          "props": {
+            "topColor": "#6D28D9",
+            "bottomColor": "#E879F9",
+            "intensity": 0.38,
+            "interactive": true,
+            "quality": "medium",
+            "mixBlendMode": "screen"
+          },
+          "zone": "left 40% only",
+          "note": "único WebGL en hero — sin duplicar en contacto"
+        }
+      ],
+      "content": {
+        "eyebrow": "Car Wrapping & PPF · Madrid",
+        "headline": "Vinilado que brilla. Diseñado contigo.",
+        "subproof": "★ 5.0 Google · Top 4 Wrap Masters España 2026",
+        "description": "Transformación exterior con precisión de taller boutique en Rivas-Vaciamadrid.",
+        "ctas": [
+          { "label": "Pedir presupuesto", "variant": "primary-shimmer" },
+          { "label": "Ver servicios", "variant": "outline" }
+        ]
+      }
+    },
+    {
+      "id": "trust-ribbon",
+      "replaces": "trust-strip",
+      "layout": "horizontal scroll-snap mobile / inline-flex desktop — una sola fila compacta",
+      "style": "glass pill chips, no grid pesado",
+      "items": [
+        { "icon": "star", "value": "5.0", "label": "Google" },
+        { "icon": "trophy", "value": "Top 4", "label": "Wrap Masters 2026" },
+        { "icon": "map-pin", "value": "Rivas", "label": "Nave 57" },
+        { "icon": "layers", "value": "Mate · Brillo", "label": "Acabados" }
+      ],
+      "position": "overlap hero bottom -2rem (ribbon flotante)",
+      "background": "#0A0A0C border-t border-white/5 — sin animación"
+    },
+    {
+      "id": "servicios-journey",
+      "layout": {
+        "type": "scroll-scrub-chapters",
+        "chapterHeightVh": { "mobile": 120, "desktop": 140 },
+        "stickyMedia": true,
+        "progressIndicator": {
+          "type": "vertical-dots-left",
+          "labels": ["Integral", "Parcial", "PPF", "Color", "Llantas", "Lunas"]
+        },
+        "chapterColorBar": "4px top border tint per category (wrap/ppf/detail)"
+      },
+      "header": {
+        "eyebrow": "Servicios",
+        "title": "Cada acabado, un capítulo",
+        "description": "Desliza para ver la transformación de cada servicio en el taller."
+      },
+      "backgrounds": [
+        {
+          "component": "section-ambient",
+          "enabled": true,
+          "animated": false,
+          "note": "gradiente estático — quitar keyframes section-glow"
+        }
+      ],
+      "subCta": {
+        "style": "inline glass banner",
+        "title": "¿Primera vez con vinilo?",
+        "href": "#proceso"
+      }
+    },
+    {
+      "id": "proceso-timeline",
+      "replaces": "proceso",
+      "layout": {
+        "type": "horizontal-timeline-desktop / vertical-timeline-mobile",
+        "connector": "gradient line purple→fuchsia",
+        "cards": "4 steps with number badge"
+      },
+      "backgrounds": [
+        {
+          "component": "EvilEye",
+          "enabled": false,
+          "reason": "UX: animación infinita distractora; reemplazar por radial-gradient estático morado 12% opacity"
+        },
+        {
+          "component": "css-radial",
+          "props": { "color": "#7C3AED", "opacity": 0.12, "position": "center top" }
+        }
+      ],
+      "header": {
+        "eyebrow": "Proceso",
+        "title": "De la idea a la entrega",
+        "description": "Cuatro pasos. Sin sorpresas."
+      }
+    },
+    {
+      "id": "reseñas-proof",
+      "layout": {
+        "headerCenter": true,
+        "aggregateRating": { "value": 5, "count": "12+", "source": "Google Maps" },
+        "cards": "marquee único todas las breakpoints pause-on-hover",
+        "cardStyle": "glass + quote mark subtle + author + verified badge"
+      },
+      "conversion": "CTA texto 'Ver en Google Maps' debajo con cursor-pointer"
+    },
+    {
+      "id": "contacto-cta",
+      "layout": {
+        "grid": "1 col mobile / 2 col lg",
+        "left": "header + teléfono hero-size + horario + social",
+        "right": "map rounded-3xl sticky",
+        "primaryAction": "tel button full-width mobile top of section"
+      },
+      "backgrounds": [
+        {
+          "component": "LightPillar",
+          "enabled": false,
+          "replacedBy": "GridPattern estático + beam sutil CSS (performance)"
+        },
+        {
+          "component": "subtle-grid",
+          "opacity": 0.04
+        }
+      ],
+      "header": {
+        "eyebrow": "Contacto",
+        "title": "Visítanos en Rivas",
+        "description": "Respuesta en el mismo día laborable."
+      }
+    }
+  ],
+  "globalComponents": {
+    "navbar": {
+      "sticky": true,
+      "ctaAlwaysVisible": true,
+      "mobileMenu": "full-width sheet",
+      "activeSectionHighlight": true
+    },
+    "stickyMobileFab": {
+      "enabled": true,
+      "label": "Presupuesto",
+      "href": "#contacto",
+      "position": "bottom-right safe-area",
+      "showAfterScroll": "hero",
+      "style": "purple filled shadow-glow"
+    },
+    "scrollProgress": {
+      "keep": true,
+      "color": "gradient purple→fuchsia",
+      "height": "2px"
+    },
+    "footer": {
+      "simplify": true,
+      "add": "award one-liner + tel click"
+    }
+  },
+  "performance": {
+    "webglBudget": "max 1 canvas visible",
+    "videoPolicy": "preload metadata hero; servicios lazy on intersection",
+    "lcp": "hero poster priority; video after paint"
+  },
+  "accessibility": {
+    "contrast": "texto body mínimo zinc-400 (#A1A1AA) sobre #050505",
+    "focus": "ring-2 ring-purple-400 ring-offset-2 ring-offset-black en todos los CTAs",
+    "motion": "prefers-reduced-motion desactiva WebGL, scrub y marquees"
+  },
+  "uxAudit": {
+    "expectedGains": [
+      "Confianza antes del scroll de servicios (+conversión)",
+      "Menos fatiga visual (1 WebGL, sin Evil Eye loop)",
+      "CTA sticky móvil (+llamadas/presupuestos)",
+      "Timeline proceso más escaneable",
+      "Servicios más cortos en móvil (120vh vs 160vh)",
+      "Contacto más directo (tel prominente)"
+    ],
+    "targetScores": {
+      "visualHierarchy": 9,
+      "conversion": 8,
+      "performance": 8,
+      "accessibility": 9,
+      "brandCohesion": 9
+    }
+  },
+  "implementationPriority": [
+    { "p": 1, "task": "Mover subproof (rating + award) al hero" },
+    { "p": 1, "task": "Trust ribbon flotante overlap hero" },
+    { "p": 1, "task": "Quitar EvilEye y segundo LightPillar; section-glow estático" },
+    { "p": 2, "task": "Sticky mobile FAB presupuesto" },
+    { "p": 2, "task": "Proceso timeline con conector" },
+    { "p": 2, "task": "Servicios: chapter dots + reducir vh móvil + descripción header" },
+    { "p": 3, "task": "Reseñas: rating aggregate en header + marquee unificado" },
+    { "p": 3, "task": "Contacto: tel CTA hero-size mobile" }
+  ]
+}
