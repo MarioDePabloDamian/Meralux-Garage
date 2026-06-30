@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`scroll-smooth ${montserrat.variable} ${syne.variable}`}>
+    <html lang="es" className={`${montserrat.variable} ${syne.variable}`}>
       <body className="min-h-screen bg-[#050505] font-sans antialiased">{children}</body>
     </html>
   );

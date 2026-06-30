@@ -85,7 +85,7 @@ export function CinematicScene({
       <ambientLight ref={ambientRef} intensity={0.04} color="#ffffff" />
 
       <GalaSpotlights mobile={mobile} />
-      <GalaTheaterSet mobile={mobile} />
+      <GalaTheaterSet mobile={mobile} progressRef={progressRef} />
 
       <Environment
         preset="night"

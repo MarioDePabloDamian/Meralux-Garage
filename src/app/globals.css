@@ -135,10 +135,17 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   overflow-x: clip;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 html::-webkit-scrollbar {
@@ -152,6 +159,8 @@ body {
   padding-right: env(safe-area-inset-right);
   scrollbar-width: none;
   -ms-overflow-style: none;
+  touch-action: pan-y;
+  overscroll-behavior-y: none;
 }
 
 body::-webkit-scrollbar {

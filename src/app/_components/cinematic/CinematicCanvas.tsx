@@ -29,12 +29,13 @@ export function CinematicCanvas({ progressRef }: CinematicCanvasProps) {
   return (
     <Canvas
       className="pointer-events-none absolute inset-0 z-10"
-      dpr={mobile ? [1, 1.35] : [1, 2]}
+      dpr={mobile ? [1, 1.15] : [1, 2]}
       shadows={!mobile}
+      frameloop="always"
       gl={{
-        antialias: true,
+        antialias: !mobile,
         alpha: true,
-        powerPreference: "high-performance",
+        powerPreference: mobile ? "default" : "high-performance",
         toneMapping: THREE.ACESFilmicToneMapping,
       }}
       onCreated={({ gl }) => {

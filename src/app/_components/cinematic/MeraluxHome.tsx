@@ -6,11 +6,11 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { MeraluxCinematicExperience } from "./MeraluxCinematicExperience";
 import { CinematicLightPillar } from "./CinematicLightPillar";
 import {
-  EXPERIENCE_MOUNT_MS,
   INTRO_EXIT_MS,
   MeraluxPosterIntro,
   preloadCinematicAssets,
 } from "./MeraluxPosterIntro";
+import { MERALUX_INTRO_COMPLETE_EVENT } from "@/lib/cinematic/events";
 
 export function MeraluxHome() {
   const searchParams = useSearchParams();
@@ -31,17 +31,12 @@ export function MeraluxHome() {
 
     if (holdPoster) return;
 
-    const mountTimer = window.setTimeout(
-      () => setShowExperience(true),
-      EXPERIENCE_MOUNT_MS,
-    );
-    const exitTimer = window.setTimeout(
-      () => setShowIntro(false),
-      INTRO_EXIT_MS,
-    );
+    const exitTimer = window.setTimeout(() => {
+      setShowIntro(false);
+      setShowExperience(true);
+    }, INTRO_EXIT_MS);
 
     return () => {
-      window.clearTimeout(mountTimer);
       window.clearTimeout(exitTimer);
     };
   }, [holdPoster, skipIntro]);
@@ -49,13 +44,46 @@ export function MeraluxHome() {
   useEffect(() => {
     if (!showIntro) return;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const html = document.documentElement;
+    const body = document.body;
+    const scrollY = window.scrollY;
+
+    const prev = {
+      htmlOverflow: html.style.overflow,
+      bodyOverflow: body.style.overflow,
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyWidth: body.style.width,
+      bodyTouchAction: body.style.touchAction,
+    };
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
+    body.style.touchAction = "none";
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      html.style.overflow = prev.htmlOverflow;
+      body.style.overflow = prev.bodyOverflow;
+      body.style.position = prev.bodyPosition;
+      body.style.top = prev.bodyTop;
+      body.style.width = prev.bodyWidth;
+      body.style.touchAction = prev.bodyTouchAction;
+      window.scrollTo(0, scrollY);
     };
   }, [showIntro]);
+
+  useEffect(() => {
+    if (!showExperience || showIntro) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      window.dispatchEvent(new Event(MERALUX_INTRO_COMPLETE_EVENT));
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [showExperience, showIntro]);
 
   return (
     <>

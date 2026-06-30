@@ -9,7 +9,6 @@ import {
 } from "@/lib/cinematic/scene-content";
 import {
   sampleDiscoveryParallax,
-  sampleScrollHint,
   sampleScrollParallax,
   type ScrollParallaxState,
 } from "@/lib/cinematic/scroll-parallax";
@@ -44,7 +43,7 @@ function ParallaxPanel({
   return (
     <div
       className={cn(
-        "pointer-events-none absolute inset-x-0 bottom-0 top-0 flex px-4 pb-16 pt-20 sm:px-8 lg:px-12",
+        "pointer-events-none absolute inset-x-0 bottom-0 top-0 flex px-4 pb-[max(5.5rem,env(safe-area-inset-bottom))] pt-[max(4.5rem,env(safe-area-inset-top))] sm:px-8 sm:pb-16 sm:pt-20 lg:px-12",
         isCenter
           ? "items-center justify-center text-center"
           : "items-center justify-start text-left",
@@ -127,7 +126,7 @@ function FinalePanel({ parallax }: { parallax: ScrollParallaxState }) {
 
   return (
     <div
-      className="pointer-events-none absolute inset-x-0 bottom-0 top-0 flex items-center justify-start px-4 pb-12 pt-20 sm:px-8 lg:px-12"
+      className="pointer-events-none absolute inset-x-0 bottom-0 top-0 flex items-center justify-start px-4 pb-[max(6.5rem,env(safe-area-inset-bottom))] pt-[max(4.5rem,env(safe-area-inset-top))] sm:px-8 sm:pb-12 sm:pt-20 lg:px-12"
       style={{ opacity: parallax.panelOpacity }}
     >
       <div
@@ -137,7 +136,7 @@ function FinalePanel({ parallax }: { parallax: ScrollParallaxState }) {
           transform: `translate3d(0, ${parallax.title.y}px, 0)`,
         }}
       >
-        <div className="surface-glass rounded-3xl border border-white/10 bg-black/55 p-6 backdrop-blur-xl sm:p-7">
+        <div className="surface-glass max-h-[min(78svh,42rem)] overflow-y-auto overscroll-contain rounded-3xl border border-white/10 bg-black/55 p-5 backdrop-blur-xl sm:max-h-none sm:overflow-visible sm:p-7">
           <div
             className="flex items-center gap-3"
             style={{
@@ -301,8 +300,6 @@ function ScenePanel({ sceneId, progress }: CinematicOverlayProps) {
 }
 
 export function CinematicOverlay({ sceneId, progress }: CinematicOverlayProps) {
-  const scrollHint = sampleScrollHint(progress);
-  const showHint = scrollHint.opacity > 0.02;
   const isFinale = sceneId === "finale";
 
   return (
@@ -311,20 +308,6 @@ export function CinematicOverlay({ sceneId, progress }: CinematicOverlayProps) {
         <div className="absolute inset-y-0 left-0 w-full max-w-3xl bg-gradient-to-r from-[#050505]/94 via-[#050505]/72 to-transparent" />
       ) : null}
       <ScenePanel sceneId={sceneId} progress={progress} />
-      {!isFinale && showHint ? (
-        <div
-          className="absolute inset-x-0 bottom-[max(1.5rem,env(safe-area-inset-bottom))] z-20 flex flex-col items-center"
-          style={{
-            opacity: scrollHint.opacity,
-            transform: `translateY(${scrollHint.y}px)`,
-          }}
-        >
-          <span className="pl-[0.28em] text-[10px] font-medium uppercase tracking-[0.28em] text-zinc-500">
-            Desliza
-          </span>
-          <span className="mt-2 block h-8 w-px bg-gradient-to-b from-purple-400/70 to-transparent" aria-hidden />
-        </div>
-      ) : null}
     </div>
   );
 }
