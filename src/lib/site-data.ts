@@ -118,5 +118,6 @@ export const site = {
   ],
   media: {
     logo: "/logo/meralux-garage.png",
+    logoTransparent: "/logo/meralux-garage-photoroom.png",
   },
 } as const;

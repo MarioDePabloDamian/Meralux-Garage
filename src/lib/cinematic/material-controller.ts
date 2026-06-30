@@ -1,17 +1,18 @@
 import * as THREE from "three";
 import { WRAP_COLOR } from "./scene-config";
 
-const PAINT_PATTERN = /\bPaint_Geo\b|\bColoured_Geo\b|esta80\b|_Paint_/i;
+const PAINT_PATTERN =
+  /\bPaint_Geo\b|\bColoured_Geo\b|Bodyunref|Bonnetunref|Bonnetrefblend|esta80\b|_Paint_/i;
 const SKIP_PATTERN =
-  /glass|wheel|tire|tyre|interior|leather|chrome|light|taillight|brake|blink|mirror|gauge|needle|seat|steer|carbon|grille|engine|badge|rubber|plastic|black2|matte|symbol|tormoz|disk|window|seatbelt|manufacturerplate/i;
+  /glass|wheel|tire|tyre|interior|leather|chrome|light|taillight|brake|blink|mirror|gauge|needle|seat|steer|carbon|grille|engine|badge|rubber|plastic|black2|matte|symbol|tormoz|disk|window|seatbelt|manufacturerplate|bodyrefblend|puncheff|chevrolet/i;
 
 const INTERIOR_PATTERN =
   /interior|seat|steer|gauge|needle|gauges|boot|mats|dials|leather|stitch|sdd_|Interior_Geo|SeatBelt|WindowInside/i;
 
 const EXTERIOR_SHELL_PATTERN =
-  /body|frame|door|fender|bumper|hood|trunk|coupe|Paint_Geo|Coloured_Geo|Base_Geo|mirror_[LR](?!.*interior)/i;
+  /bodyunref|bonnetunref|bonnetref|frame|door|fender|bumper|hood|trunk|coupe|Paint_Geo|Coloured_Geo|Base_Geo|mirror_[LR](?!.*interior)/i;
 
-const GLASS_PATTERN = /glass|windshield|Window_Geo|sideglass|doorglass|mirrorglass|red_glass/i;
+const GLASS_PATTERN = /glass|windshield|Window_Geo|sideglass|doorglass|mirrorglass|red_glass|Glassglass/i;
 
 const TIRE_PATTERN = /tire|tyre|tormoz|glossblack|1disk|wheel_pl|rubber|Wheel\d|_Wheel|Tyre|Tread/i;
 
@@ -87,6 +88,14 @@ function isPaintMesh(mesh: THREE.Mesh): boolean {
   );
 }
 
+function meshOrMaterialMatches(
+  mesh: THREE.Mesh,
+  mat: THREE.Material,
+  pattern: RegExp,
+): boolean {
+  return pattern.test(mesh.name) || pattern.test(mat.name);
+}
+
 export function collectPaintMaterials(root: THREE.Object3D): PaintRecord[] {
   const cached = paintCache.get(root);
   if (cached) return cached;
@@ -157,7 +166,7 @@ export function tuneCarSurfaceMaterials(root: THREE.Object3D): void {
     for (const mat of mats) {
       if (!(mat instanceof THREE.MeshStandardMaterial)) continue;
 
-      if (GLASS_PATTERN.test(name)) {
+      if (meshOrMaterialMatches(child, mat, GLASS_PATTERN)) {
         mat.transparent = true;
         mat.opacity = Math.min(mat.opacity > 0 ? mat.opacity : 1, 0.78);
         mat.roughness = Math.min(mat.roughness, 0.06);
@@ -168,7 +177,11 @@ export function tuneCarSurfaceMaterials(root: THREE.Object3D): void {
         continue;
       }
 
-      if (EXTERIOR_SHELL_PATTERN.test(name) && !/rubber|plastic|glass/i.test(name)) {
+      if (
+        meshOrMaterialMatches(child, mat, EXTERIOR_SHELL_PATTERN) &&
+        !/rubber|plastic|glass/i.test(name) &&
+        !/glass/i.test(mat.name)
+      ) {
         mat.transparent = false;
         mat.opacity = 1;
         mat.depthWrite = true;
@@ -180,7 +193,7 @@ export function tuneCarSurfaceMaterials(root: THREE.Object3D): void {
         continue;
       }
 
-      if (/chrome|light|headlight|taillight/i.test(name)) {
+      if (/chrome|light|headlight|taillight/i.test(name) || /chrome|light|headlight|taillight/i.test(mat.name)) {
         mat.envMapIntensity = 2.1;
         mat.metalness = Math.max(mat.metalness, 0.9);
         mat.roughness = Math.min(mat.roughness, 0.12);
@@ -208,11 +221,11 @@ export function applyEnvironmentIntensity(
     for (const mat of mats) {
       if (!(mat instanceof THREE.MeshStandardMaterial)) continue;
 
-      if (GLASS_PATTERN.test(name)) {
+      if (meshOrMaterialMatches(child, mat, GLASS_PATTERN)) {
         mat.envMapIntensity = 2.0 * scale;
-      } else if (EXTERIOR_SHELL_PATTERN.test(name)) {
+      } else if (meshOrMaterialMatches(child, mat, EXTERIOR_SHELL_PATTERN)) {
         mat.envMapIntensity = 1.85 * scale;
-      } else if (/chrome|light/i.test(name)) {
+      } else if (/chrome|light/i.test(name) || /chrome|light/i.test(mat.name)) {
         mat.envMapIntensity = 2.2 * scale;
       } else if (TIRE_PATTERN.test(name)) {
         mat.envMapIntensity = 0.45 * scale;

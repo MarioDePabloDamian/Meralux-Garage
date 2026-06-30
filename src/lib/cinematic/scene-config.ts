@@ -6,7 +6,7 @@ export const STUDIO_BLACK = "#050505";
 export const STUDIO_BLACK_HEX = 0x050505;
 
 export const MODEL_URL = "/models/hero-car.glb";
-/** Escala objetivo en unidades mundo (Corvette C8 ZR1 ~4.5 m) */
+/** Escala objetivo en unidades mundo (Corvette C8 Stingray ~4.5 m) */
 export const MODEL_TARGET_SCALE = 4.6;
 
 /** Ancho del logo en unidades mundo */
@@ -17,10 +17,10 @@ export const PLATFORM_SURFACE_Y = 0.003;
 
 export const CAMERA_FOCUS_Y = 0.62;
 
-/** Volteo base + 30° a la izquierda (vista 3/4 lado conductor) */
-export const CAR_MODEL_ROTATION_Y = Math.PI + Math.PI / 6;
+/** Orientación base 3/4 + volteo 180° del mesh del coche */
+export const CAR_MODEL_ROTATION_Y = Math.PI + Math.PI / 6 + Math.PI;
 
-/** Solo compensa el volteo 180° del modelo — no el +45° extra (la cámara queda fija) */
+/** Compensa la órbita de cámara (independiente del volteo del modelo) */
 export const CAR_AZIMUTH_OFFSET = Math.PI;
 
 const SCENE_CAR_ROTATION: Record<SceneId, number> = {

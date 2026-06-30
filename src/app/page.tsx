@@ -1,5 +1,10 @@
-import { MeraluxCinematicExperience } from "./_components/cinematic/MeraluxCinematicExperience";
+import { Suspense } from "react";
+import { MeraluxHome } from "./_components/cinematic/MeraluxHome";
 
 export default function Home() {
-  return <MeraluxCinematicExperience />;
+  return (
+    <Suspense fallback={null}>
+      <MeraluxHome />
+    </Suspense>
+  );
 }

@@ -6,7 +6,6 @@ import { useReducedMotion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CinematicContext } from "./cinematic-context";
-import { CinematicLightPillar } from "./CinematicLightPillar";
 import { CinematicOverlay } from "./CinematicOverlay";
 import { CinematicFallback } from "./CinematicFallback";
 import { SCROLL_TRACK_VH, getSceneAtProgress } from "@/lib/cinematic/scroll-timeline";
@@ -90,7 +89,7 @@ export function MeraluxCinematicExperience() {
 
   return (
     <CinematicContext.Provider value={{ progress, sceneId }}>
-      <div className="relative bg-[#050505] text-white">
+      <div className="relative text-white">
         <FloatingCta phoneHref={site.phoneHref} />
 
         <div
@@ -100,7 +99,6 @@ export function MeraluxCinematicExperience() {
           aria-label="Experiencia cinematográfica Meralux Garage"
         >
           <div ref={pinRef} className="studio-black-unify relative h-[100dvh] w-full overflow-hidden">
-            <CinematicLightPillar />
             <CinematicCanvas progressRef={progressRef} />
             <CinematicOverlay sceneId={sceneId} progress={progress} />
           </div>
