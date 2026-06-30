@@ -50,11 +50,15 @@ Desktop.ini
 
 # IDE
 .idea/
+.cursor/
 *.swp
 *.swo
 
 # Blender / GLB patch temp
 scripts/.glb-patch-tmp/
+
+# pnpm
+pnpm-workspace.yaml
 
 # Certificates
 *.pem
